@@ -1,11 +1,27 @@
 'use client'
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import FileUpload from '@/components/FileUpload'
+import { toast } from 'react-toastify'
 
 const MyForm = () => {
   const [formData, setFormData] = useState<Form>({
+    full_name: '',
+    email: '',
+    address: '',
+    city: '',
+    country_region: '',
+    state_province: '',
+    zip_code: '',
     images: [],
   })
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    toast('Edit MyForm Handle Submit To Submit the Form to the server!', {
+      type: 'success',
+    })
+  }
+
   return (
     <div className="h-screen w-full">
       <div className="p-2 h-full w-full flex flex-col items-center justify-center">
@@ -14,7 +30,7 @@ const MyForm = () => {
         </h1>
         <div className="flex items-center justify-center h-full flex-1">
           <div className="w-[90%] mx-auto sm:w-[500px]">
-            <form className="w-full">
+            <form className="w-full" onSubmit={handleSubmit}>
               <div className="lg:col-span-2">
                 <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                   <div className="md:col-span-5">
@@ -24,7 +40,10 @@ const MyForm = () => {
                       name="full_name"
                       id="full_name"
                       className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      value=""
+                      value={formData.full_name}
+                      onChange={(e) => {
+                        setFormData({ ...formData, full_name: e.target.value })
+                      }}
                     />
                   </div>
 
@@ -35,8 +54,11 @@ const MyForm = () => {
                       name="email"
                       id="email"
                       className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      value=""
                       placeholder="email@domain.com"
+                      value={formData.email}
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value })
+                      }}
                     />
                   </div>
 
@@ -47,8 +69,11 @@ const MyForm = () => {
                       name="address"
                       id="address"
                       className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      value=""
                       placeholder=""
+                      value={formData.address}
+                      onChange={(e) => {
+                        setFormData({ ...formData, address: e.target.value })
+                      }}
                     />
                   </div>
 
@@ -59,8 +84,11 @@ const MyForm = () => {
                       name="city"
                       id="city"
                       className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      value=""
                       placeholder=""
+                      value={formData.city}
+                      onChange={(e) => {
+                        setFormData({ ...formData, city: e.target.value })
+                      }}
                     />
                   </div>
 
@@ -72,7 +100,13 @@ const MyForm = () => {
                         id="country"
                         placeholder="Country"
                         className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
-                        value=""
+                        value={formData.country_region}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            country_region: e.target.value,
+                          })
+                        }}
                       />
                       <button
                         tabIndex={-1}
@@ -118,7 +152,13 @@ const MyForm = () => {
                         id="state"
                         placeholder="State"
                         className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
-                        value=""
+                        value={formData.state_province}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            state_province: e.target.value,
+                          })
+                        }}
                       />
                       <button
                         tabIndex={-1}
@@ -164,69 +204,11 @@ const MyForm = () => {
                       id="zipcode"
                       className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                       placeholder=""
-                      value=""
+                      value={formData.zip_code}
+                      onChange={(e) => {
+                        setFormData({ ...formData, zip_code: e.target.value })
+                      }}
                     />
-                  </div>
-
-                  <div className="md:col-span-5">
-                    <div className="inline-flex items-center">
-                      <input
-                        type="checkbox"
-                        name="billing_same"
-                        id="billing_same"
-                        className="form-checkbox"
-                      />
-                      <label htmlFor="billing_same" className="ml-2">
-                        My billing address is different than above.
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label htmlFor="soda">How many soda pops?</label>
-                    <div className="h-10 w-28 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                      <button
-                        tabIndex={-1}
-                        className="cursor-pointer outline-none focus:outline-none border-r border-gray-200 transition-all text-gray-500 hover:text-blue-600"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4 mx-2"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                      <input
-                        name="soda"
-                        id="soda"
-                        placeholder="0"
-                        className="px-2 text-center appearance-none outline-none text-gray-800 w-full bg-transparent"
-                        value="0"
-                      />
-                      <button
-                        tabIndex={-1}
-                        className="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-500 hover:text-blue-600"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4 mx-2 fill-current"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </div>
                   </div>
                 </div>
                 <br />
