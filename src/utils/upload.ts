@@ -16,7 +16,7 @@ export const uploadToCloudinary = async (
         invalidate: true,
         resource_type: 'auto',
         filename_override: fileName,
-        folder: 'nullcommerce/' + folder,
+        folder: 'nullcommerce/' + folder, // you can specifu which folders you want the images to be saved in here
         use_filename: true,
         eager: [
           {

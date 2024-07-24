@@ -15,7 +15,7 @@ const FileRejectionToast = ({ file, errors }: any) => (
   </div>
 )
 
-const FileUpload = ({ formData, setFormData, index }: any) => {
+const FileUpload = ({ formData, setFormData }: FileUploadType) => {
   const user_id = 'Your User ID Here' // when a user is logged the user_id is passed to here
 
   const onDrop = useCallback(
@@ -32,16 +32,7 @@ const FileUpload = ({ formData, setFormData, index }: any) => {
             toast.error(`Error uploading ${file.name}: ${error.message}`)
           }
         }
-
-        const updatedVariants = [...formData.variants]
-        updatedVariants[index] = {
-          ...updatedVariants[index],
-          assets: {
-            ...updatedVariants[index].assets,
-            images: [...updatedVariants[index].assets.images, ...paths],
-          },
-        }
-        setFormData({ ...formData, variants: updatedVariants })
+        setFormData({ ...formData, images: [...formData.images, ...paths] })
       }
 
       await uploadFiles()
@@ -50,7 +41,7 @@ const FileUpload = ({ formData, setFormData, index }: any) => {
         toast.error(<FileRejectionToast file={file} errors={errors} />)
       })
     },
-    [formData, setFormData, index]
+    [formData, setFormData]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -81,72 +72,36 @@ const FileUpload = ({ formData, setFormData, index }: any) => {
             : 'Drag & drop files here, or click to select files'}
         </p>
       </div>
-      {Array.isArray(formData.variants[index].assets.images) &&
-        formData.variants[index].assets.images.length > 0 && (
-          <ul className="mt-4 w-full flex items-center justify-start flex-wrap gap-2">
-            {formData.variants[index].assets.images.map(
-              (file: string, i: Key | null | undefined) => (
-                <li
-                  key={i}
-                  className={`w-min cursor-pointer text-center p-2 bg-white rounded shadow-sm mb-2 ${
-                    i == formData.variants[index].assets.thumbnail
-                      ? 'border-2 border-blue-600'
-                      : 'border-2 border-slate-400'
-                  }`}
-                  onClick={() => {
-                    const updatedVariants = [...formData.variants]
-                    updatedVariants[index] = {
-                      ...updatedVariants[index],
-                      assets: {
-                        ...updatedVariants[index].assets,
-                        thumbnail: i,
-                      },
-                    }
-                    setFormData({
-                      ...formData,
-                      variants: updatedVariants,
-                    })
-                  }}
-                >
-                  <div className="">
-                    <div className="max-h-[100px] w-[100px]">
-                      {/*eslint-disable-next-line @next/next/no-img-element*/}
-                      <img src={file} alt="" className="object-cover" />
-                    </div>
-                    <div className="">
-                      <span className="text-xs">
-                        {i == formData.variants[index].assets.thumbnail
-                          ? 'Default Thumbnail'
-                          : ''}
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    className="ml-2 text-red-500 hover:text-red-700"
-                    onClick={() => {
-                      const updatedVariants = [...formData.variants]
-                      updatedVariants[index] = {
-                        ...updatedVariants[index],
-                        assets: {
-                          ...updatedVariants[index].assets,
-                          images: updatedVariants[index].assets.images.filter(
-                            (_: any, imgIndex: any) => imgIndex !== i
-                          ),
-                        },
-                      }
-                      setFormData({
-                        ...formData,
-                        variants: updatedVariants,
-                      })
-                    }}
-                  >
-                    Remove
-                  </button>
-                </li>
-              )
-            )}
-          </ul>
-        )}
+      {Array.isArray(formData.images) && formData.images.length > 0 && (
+        <ul className="mt-4 w-full flex items-center justify-start flex-wrap gap-2">
+          {formData.images.map((file: string, i: Key | null | undefined) => (
+            <li
+              key={i}
+              className={`w-min cursor-pointer text-center p-2 bg-white rounded shadow-sm mb-2`}
+            >
+              <div className="">
+                <div className="max-h-[100px] w-[100px]">
+                  {/*eslint-disable-next-line @next/next/no-img-element*/}
+                  <img src={file} alt="" className="object-cover" />
+                </div>
+              </div>
+              <button
+                className="ml-2 text-red-500 hover:text-red-700"
+                onClick={() => {
+                  setFormData({
+                    ...formData,
+                    images: formData.images.filter(
+                      (_: any, imgIndex: any) => imgIndex !== i
+                    ),
+                  })
+                }}
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

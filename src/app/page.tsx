@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
+import MyForm from './(home)/MyForm'
 
 const page = () => {
   return (
     <div>
-      <form></form>
+      <MyForm />
     </div>
   )
 }
